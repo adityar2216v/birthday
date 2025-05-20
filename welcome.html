@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome - Ayushi's Birthday</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a1a, #4a4a4a);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Arial', sans-serif;
+            perspective: 1000px;
+        }
+
+        .gift-card {
+            width: 300px;
+            height: 400px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 1s;
+            cursor: pointer;
+        }
+
+        .gift-card.open {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            background: linear-gradient(45deg, #ffd93d, #ff6b6b);
+        }
+
+        .gift-icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        .card-text {
+            color: white;
+            text-align: center;
+            font-size: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .enter-button {
+            margin-top: 30px;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            background: white;
+            border: none;
+            border-radius: 25px;
+            color: #ff6b6b;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+        }
+
+        .enter-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .sparkles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .sparkle {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: sparkle-fade 1s ease forwards;
+        }
+
+        @keyframes sparkle-fade {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(1); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="gift-card">
+        <div class="card-front">
+            <div class="gift-icon">🎁</div>
+            <div class="card-text">Click to Open</div>
+        </div>
+        <div class="card-back">
+            <div class="card-text">
+                A Special Surprise<br>Awaits You!
+            </div>
+            <a href="index.html" class="enter-button">Enter</a>
+        </div>
+    </div>
+    <div class="sparkles" id="sparkles"></div>
+
+    <script>
+        const card = document.querySelector('.gift-card');
+        const sparklesContainer = document.getElementById('sparkles');
+
+        card.addEventListener('click', () => {
+            card.classList.add('open');
+            createSparkles();
+        });
+
+        function createSparkles() {
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const sparkle = document.createElement('div');
+                    sparkle.className = 'sparkle';
+                    sparkle.style.width = Math.random() * 8 + 2 + 'px';
+                    sparkle.style.height = sparkle.style.width;
+                    sparkle.style.left = Math.random() * 100 + '%';
+                    sparkle.style.top = Math.random() * 100 + '%';
+                    sparklesContainer.appendChild(sparkle);
+
+                    setTimeout(() => sparkle.remove(), 1000);
+                }, i * 50);
+            }
+        }
+
+        // Create initial sparkles
+        setInterval(() => {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.style.width = Math.random() * 4 + 1 + 'px';
+            sparkle.style.height = sparkle.style.width;
+            sparkle.style.left = Math.random() * 100 + '%';
+            sparkle.style.top = Math.random() * 100 + '%';
+            sparklesContainer.appendChild(sparkle);
+
+            setTimeout(() => sparkle.remove(), 1000);
+        }, 500);
+    </script>
+</body>
+</html>

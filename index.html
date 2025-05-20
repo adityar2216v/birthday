@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Ayushi!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            max-width: 90%;
+            width: 600px;
+            position: relative;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        h1 {
+            color: #ff6b6b;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: pop 0.5s ease-out;
+        }
+
+        .message {
+            color: #444;
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin: 1.5rem 0;
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+            animation-delay: 0.5s;
+        }
+
+        .cake {
+            font-size: 5rem;
+            margin: 2rem 0;
+            animation: bounce 2s ease infinite;
+        }
+
+        .hearts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 1.5rem;
+            animation: float-heart 4s ease-in-out infinite;
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background: white;
+            border: none;
+            border-radius: 25px;
+            color: #ff6b6b;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes pop {
+            0% { transform: scale(0); }
+            90% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px) scale(1.1); }
+        }
+
+        @keyframes float-heart {
+            0% { transform: translateY(0) rotate(0); opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .message {
+                font-size: 1rem;
+            }
+
+            .cake {
+                font-size: 4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="welcome.html" class="back-button">← Back</a>
+    <div class="container">
+        <h1>Happy Birthday Ayushi!</h1>
+        <div class="cake">🎂</div>
+        <div class="message">
+            Dear Big Sister,<br><br>
+            On your special day, I want to thank you for being the amazing sister you are.
+            You've always been there to guide me, support me, and make me laugh.
+            May this year bring you endless joy, success, and beautiful moments!<br><br>
+            With love ❤️
+        </div>
+        <div class="hearts" id="hearts"></div>
+    </div>
+
+    <script>
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+            document.getElementById('hearts').appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
+        }
+
+        setInterval(createHeart, 300);
+
+        // Add sparkle effect on hover
+        document.querySelector('.cake').addEventListener('mouseover', function() {
+            this.style.transform = 'scale(1.2)';
+            this.style.transition = 'transform 0.3s ease';
+        });
+
+        document.querySelector('.cake').addEventListener('mouseout', function() {
+            this.style.transform = 'scale(1)';
+        });
+    </script>
+</body>
+</html>
