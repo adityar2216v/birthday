@@ -13,12 +13,90 @@
         }
 
         body {
-            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+            background: linear-gradient(135deg, #1a1a1a, #4a4a4a);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
+            perspective: 1000px;
             overflow: hidden;
+        }
+
+        .scene {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .gift-card {
+            width: 300px;
+            height: 400px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 1s, opacity 1s;
+            cursor: pointer;
+        }
+
+        .gift-card.open {
+            transform: rotateY(180deg);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            background: linear-gradient(45deg, #ffd93d, #ff6b6b);
+        }
+
+        .gift-icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        .card-text {
+            color: white;
+            text-align: center;
+            font-size: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .birthday-content {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+            opacity: 0;
+            transition: opacity 1s;
+            pointer-events: none;
+        }
+
+        .birthday-content.show {
+            opacity: 1;
+            pointer-events: all;
         }
 
         .container {
@@ -54,6 +132,12 @@
             font-size: 5rem;
             margin: 2rem 0;
             animation: bounce 2s ease infinite;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .cake:hover {
+            transform: scale(1.2);
         }
 
         .hearts {
@@ -69,25 +153,18 @@
             animation: float-heart 4s ease-in-out infinite;
         }
 
-        .back-button {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            padding: 10px 20px;
-            background: white;
-            border: none;
-            border-radius: 25px;
-            color: #ff6b6b;
-            cursor: pointer;
-            text-decoration: none;
-            font-size: 1.1rem;
-            transition: transform 0.3s, box-shadow 0.3s;
-            z-index: 1000;
+        .sparkles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
         }
 
-        .back-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        .sparkle {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: sparkle-fade 1s ease forwards;
         }
 
         @keyframes float {
@@ -116,6 +193,11 @@
             100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
         }
 
+        @keyframes sparkle-fade {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(1); opacity: 0; }
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 1.5rem;
@@ -137,21 +219,65 @@
     </style>
 </head>
 <body>
-    <a href="welcome.html" class="back-button">← Back</a>
-    <div class="container">
-        <h1>Happy Birthday Ayushi!</h1>
-        <div class="cake">🎂</div>
-        <div class="message">
-            Dear Big Sister,<br><br>
-            On your special day, I want to thank you for being the amazing sister you are.
-            You've always been there to guide me, support me, and make me laugh.
-            May this year bring you endless joy, success, and beautiful moments!<br><br>
-            With love ❤️
+    <div class="scene">
+        <div class="gift-card" id="giftCard">
+            <div class="card-front">
+                <div class="gift-icon">🎁</div>
+                <div class="card-text">Click to Open</div>
+            </div>
+            <div class="card-back">
+                <div class="card-text">
+                    A Special Surprise<br>Awaits You!
+                </div>
+            </div>
         </div>
-        <div class="hearts" id="hearts"></div>
+        <div class="sparkles" id="sparkles"></div>
+    </div>
+
+    <div class="birthday-content" id="birthdayContent">
+        <div class="container">
+            <h1>Happy Birthday Ayushi!</h1>
+            <div class="cake">🎂</div>
+            <div class="message">
+                Dear Big Sister,<br><br>
+                On your special day, I want to thank you for being the amazing sister you are.
+                You've always been there to guide me, support me, and make me laugh.
+                May this year bring you endless joy, success, and beautiful moments!<br><br>
+                With love ❤️
+            </div>
+            <div class="hearts" id="hearts"></div>
+        </div>
     </div>
 
     <script>
+        const giftCard = document.getElementById('giftCard');
+        const birthdayContent = document.getElementById('birthdayContent');
+        const sparklesContainer = document.getElementById('sparkles');
+
+        giftCard.addEventListener('click', () => {
+            giftCard.classList.add('open');
+            createSparkles();
+            setTimeout(() => {
+                birthdayContent.classList.add('show');
+            }, 1000);
+        });
+
+        function createSparkles() {
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const sparkle = document.createElement('div');
+                    sparkle.className = 'sparkle';
+                    sparkle.style.width = Math.random() * 8 + 2 + 'px';
+                    sparkle.style.height = sparkle.style.width;
+                    sparkle.style.left = Math.random() * 100 + '%';
+                    sparkle.style.top = Math.random() * 100 + '%';
+                    sparklesContainer.appendChild(sparkle);
+
+                    setTimeout(() => sparkle.remove(), 1000);
+                }, i * 50);
+            }
+        }
+
         function createHeart() {
             const heart = document.createElement('div');
             heart.className = 'heart';
@@ -167,15 +293,18 @@
 
         setInterval(createHeart, 300);
 
-        // Add sparkle effect on hover
-        document.querySelector('.cake').addEventListener('mouseover', function() {
-            this.style.transform = 'scale(1.2)';
-            this.style.transition = 'transform 0.3s ease';
-        });
+        // Initial sparkles
+        setInterval(() => {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.style.width = Math.random() * 4 + 1 + 'px';
+            sparkle.style.height = sparkle.style.width;
+            sparkle.style.left = Math.random() * 100 + '%';
+            sparkle.style.top = Math.random() * 100 + '%';
+            sparklesContainer.appendChild(sparkle);
 
-        document.querySelector('.cake').addEventListener('mouseout', function() {
-            this.style.transform = 'scale(1)';
-        });
+            setTimeout(() => sparkle.remove(), 1000);
+        }, 500);
     </script>
 </body>
 </html>
