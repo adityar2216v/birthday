@@ -111,6 +111,29 @@
             animation: float 3s ease-in-out infinite;
         }
 
+        .music-control {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            z-index: 1000;
+        }
+
+        .music-control:hover {
+            transform: scale(1.1);
+        }
+
         h1 {
             color: #ff6b6b;
             font-size: 3rem;
@@ -219,6 +242,11 @@
     </style>
 </head>
 <body>
+    <audio id="birthdaySong" loop>
+        <source src="Happy Birthday To You Ji-(Mr-Jat.in).mp3" type="audio/mpeg">
+    </audio>
+    <button class="music-control" id="musicControl" style="display: none;">🔊</button>
+
     <div class="scene">
         <div class="gift-card" id="giftCard">
             <div class="card-front">
@@ -253,13 +281,29 @@
         const giftCard = document.getElementById('giftCard');
         const birthdayContent = document.getElementById('birthdayContent');
         const sparklesContainer = document.getElementById('sparkles');
+        const birthdaySong = document.getElementById('birthdaySong');
+        const musicControl = document.getElementById('musicControl');
+        let isMuted = false;
 
         giftCard.addEventListener('click', () => {
             giftCard.classList.add('open');
             createSparkles();
             setTimeout(() => {
                 birthdayContent.classList.add('show');
+                musicControl.style.display = 'flex';
+                birthdaySong.play();
             }, 1000);
+        });
+
+        musicControl.addEventListener('click', () => {
+            if (isMuted) {
+                birthdaySong.play();
+                musicControl.textContent = '🔊';
+            } else {
+                birthdaySong.pause();
+                musicControl.textContent = '🔇';
+            }
+            isMuted = !isMuted;
         });
 
         function createSparkles() {
